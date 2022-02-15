@@ -1,0 +1,35 @@
+Objective:
+none-Verify SW and HW MLD snooping with one Wifi and two ETHLAN Clients in ETHWAN-Tagged mode
+
+Basic Configuration parameters:
+WAN Mode =ETHWAN-Tagged
+WAN Connection type =StaticIP 
+LAN Interface Type =none
+IP Version =SLAAC+DHCPv6 at LAN and Static at WAN 
+Config Interface =WEB
+
+Test prerequisits:
+DUT : 
+A.Load valid image and check whether DUT boots up. 
+
+Test Procedure:
+1. WAN Connection Creation:
+A.Select mode as ETH and Configure VLAN channel with specific VLAN [Refer attached IPV6_VLAN_details to know the exact VLAN for specific IPV6 configuration mode] 
+2. Wan_Connection_Check:
+A. Check the WAN status through web page.
+B. Check the connectivity between LAN host and WAN host using PING 
+3. Enable MLD proxy and snooping on DUT and check at DUT's console for "mcastd" process.
+4.Configure the DUT with SSID in 2.4G - 11BGN with channel 6 in open security.
+5. Scan and associate to Main AP's SSID from WIFI client.
+6.Start VLC player at WiFi client and ETH LAN PC1 with multicast address (HD video is already running at server) and check the multicast group entry was added into the "cat /proc/mcast-helper6" and "ppacmd getmcgroups".
+7. Capture packets at ETH LAN PC2.
+
+Pass/Fail Criteria:
+Step 1: WAN connection should be created successfully.
+Step 2: Connection should show and Ping should be succeded.
+Step 3: mcastd process should be running.
+Step 4: DUT should allow to configure.
+Step 5: Connection should get established.
+Step 6:Video must be playing at WiFi client1 and ETH LAN PC1 and both clients entry should be added in both the tables
+Step 7: UDP packets should not get at ETH LAN PC2.
+
