@@ -1,0 +1,33 @@
+Objective:
+Routed WAN with IGMPv2 WLAN 5G LAN clients and Bridged WAN with IGMPv3 WLAN 2.4G and LAN clients
+
+Basic Configuration parameters:
+WAN Mode =ETHWAN-Tagged
+WAN Connection type =Bridge
+LAN Interface Type =None
+IP Version =IPv4
+Config Interface =WEB
+
+Test prerequisits:
+DUT :
+A.Load valid image and check whether DUT boots up. 
+
+Test Procedure:
+1. Enable IGMP proxy on the created WAN interface in the DUT and check at DUT's console for "mcastd" process.
+2. Create WAN interface in bridge mode
+3. Configure the AP (DUT) with SSID in 5G-11AN in WPA2 security on bridge (br-lan2)
+4. Configure the AP (DUT) with SSID in 2.4G-11BGN in WPA2 security on default bridge (br-lan)
+5. Start videos at two multicast servers.
+6. Start VLC player on each LAN Host with source specifc multicast address with server address and check the multicast group entry was added into the "cat /proc/mcast-helper" and "ppacmd getmcgroups". 
+7. Connect each WLAN client to the accordingly configured SSID and start video streaming for the specified mcast group
+8. Capture the packets using wireshark at LAN host.
+
+Pass/Fail Criteria:
+1. WAN connection should be created successfully.
+2. WAN connection should be created successfully.
+3. Connection should appear and Ping should pass successfully.
+4. Connection should appear and Ping should pass successfully.
+5. Video should start successfully, mcastd process should be running.
+6. LAN PC should get traffic from specified sources and entry should be added into the mcast-helper table and in the PPA table
+7. WLAN client streaming should play only for specified mcast group not depends on LAN client streaming.
+8. We should get IGMPv3 packets and continues UDP packets from both the sources with the multicast group address on which video is streaming
